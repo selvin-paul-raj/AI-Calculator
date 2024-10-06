@@ -4,25 +4,25 @@ import { ColorSwatch,Group } from "@mantine/core";
 import { Button } from "@/components/ui/button";
 import axios from 'axios';
 
-interface Response{
-    expr:string;
-    result:string;
-    assign:boolean;
-}
+// interface Response{
+//     expr:string;
+//     result:string;
+//     assign:boolean;
+// }
 
-interface GeneratedResult{
-    expression:string;
-    answer:string;
+// interface GeneratedResult{
+//     expression:string;
+//     answer:string;
 
-}
+// }
 
 const Home = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDrawing,setIsDrawing]=useState(false);
     const [color ,setColor]=useState('rga(255,255,255)');
     const [reset,setRest]=useState(false);
-    const [result ,setResult]=useState<GeneratedResult>();
-    const [dictOfVars,setDictOfVars]=useState({});
+    // const [result ,setResult]=useState<GeneratedResult>();
+    const [dictOfVars]=useState({});
 
     useEffect(()=>{
         if(reset){
