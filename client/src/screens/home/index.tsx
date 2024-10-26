@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
@@ -26,7 +25,7 @@ export default function Home() {
     const [dictOfVars, setDictOfVars] = useState({});
     const [result, setResult] = useState<GeneratedResult>();
     const [resultsHistory, setResultsHistory] = useState<Array<GeneratedResult>>([]);
-    const [latexPosition, setLatexPosition] = useState({ x: 10, y: 200 });
+    // const [latexPosition, setLatexPosition] = useState({ x: 10, y: 200 });
     const [latexExpression, setLatexExpression] = useState<Array<string>>([]);
     const [showPopup, setShowPopup] = useState(false);
     const [drawingHistory, setDrawingHistory] = useState<ImageData[]>([]);
@@ -52,13 +51,26 @@ export default function Home() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
     
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const renderLatexToCanvas = (expression: string, answer: string) => {
+        const latex = `\\(\\LARGE{${expression} = ${answer}}\\)`;
+        setLatexExpression([...latexExpression, latex]);
+
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+    };
 
     useEffect(() => {
         if (result) {
             setResultsHistory([...resultsHistory, result]);
             renderLatexToCanvas(result.expression, result.answer);
         }
-    }, [result]);
+    }, [renderLatexToCanvas, result, resultsHistory]);
 
     useEffect(() => {
         if (reset) {
@@ -101,19 +113,7 @@ export default function Home() {
         }
     }, []);
 
-    const renderLatexToCanvas = (expression: string, answer: string) => {
-        const latex = `\\(\\LARGE{${expression} = ${answer}}\\)`;
-        setLatexExpression([...latexExpression, latex]);
-
-        const canvas = canvasRef.current;
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
-        }
-    };
-
+  
     const resetCanvas = () => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -192,6 +192,7 @@ export default function Home() {
         setIsDrawing(false);
     };
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const undoLastDraw = () => {
         const canvas = canvasRef.current;
         if (canvas && drawingHistory.length > 0) {
@@ -250,7 +251,7 @@ export default function Home() {
         return () => {
             document.removeEventListener('keydown', handleUndo);
         };
-    }, [drawingHistory]);
+    }, [drawingHistory, undoLastDraw]);
 
     return (
         <>
