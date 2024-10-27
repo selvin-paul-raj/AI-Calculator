@@ -1,5 +1,3 @@
-
-
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -25,7 +23,6 @@ export default function Home() {
     const [dictOfVars, setDictOfVars] = useState({});
     const [result, setResult] = useState<GeneratedResult>();
     const [resultsHistory, setResultsHistory] = useState<Array<GeneratedResult>>([]);
-    // const [latexPosition, setLatexPosition] = useState({ x: 10, y: 200 });
     const [latexExpression, setLatexExpression] = useState<Array<string>>([]);
     const [showPopup, setShowPopup] = useState(false);
     const [drawingHistory, setDrawingHistory] = useState<ImageData[]>([]);
@@ -70,7 +67,7 @@ export default function Home() {
             setResultsHistory([...resultsHistory, result]);
             renderLatexToCanvas(result.expression, result.answer);
         }
-    }, [renderLatexToCanvas, result, resultsHistory]);
+    }, [ result]);
 
     useEffect(() => {
         if (reset) {
